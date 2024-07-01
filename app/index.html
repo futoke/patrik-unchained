@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .btn-group {
+            margin: 0;
+            width: 99%;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .btn-group button {
+            background-color: #04AA6D;
+            border: 1px solid green;
+            color: white;
+            padding: 10px 24px;
+            cursor: pointer; 
+            font-size: 128px;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .btn-group button:not(:last-child) {
+            border-bottom: none;
+        }
+
+        .btn-group button:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+    <div class="btn-group">
+        <button onclick = "(() => fetch('/cmd/start'))()">START</button>
+        <button onclick = "(() => fetch('/cmd/stop'))()">STOP</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,3 @@
+pyserial
+fastapi
+pydantic
