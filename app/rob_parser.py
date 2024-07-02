@@ -15,7 +15,7 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
-rob_filename = "climb.rob"
+rob_filename = "greet.rob"
 
 with open(ACTIONS_PATH / rob_filename, "rb") as f:
     f.seek(ACTION_NUM_BYTE)
