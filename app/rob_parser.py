@@ -57,7 +57,7 @@ with open(ACTIONS_PATH / rob_filename, "rb") as fp:
         if reader.is_complete():
             rob_file = reader.build()
             for action in rob_file.actions: 
-                action_dict = {"time": action.time}
+                action_dict = {"time": action.time, "servos": dict()}
                 for servo_num, servo in enumerate(action.servos):
                     servo_position = servo.position
                     if (servo_position == SERVO_PREFIX and 
@@ -65,7 +65,7 @@ with open(ACTIONS_PATH / rob_filename, "rb") as fp:
                        servo.tail == 0): 
                         continue
                     else:
-                        action_dict[servo_num] = servo_position
+                        action_dict["servos"][servo_num] = servo_position
                 actions_list += [action_dict]
 
 for action in actions_list:
