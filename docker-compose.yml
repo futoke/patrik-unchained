@@ -6,6 +6,6 @@ services:
     ports:
      - "80:80"
     volumes:
-     - ./app:/code/app
+     - /home/khadas/patrik-unchained/app:/code/app
     devices:
     - "/dev/ttyUSB0:/dev/ttyUSB0"
