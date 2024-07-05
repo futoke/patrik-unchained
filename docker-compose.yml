@@ -1,1 +1,11 @@
+version: '3'
 
+services:
+  patrik-move:
+    build: .
+    ports:
+     - "80:80"
+    volumes:
+     - ./app:/code/app
+    devices:
+    - "/dev/ttyUSB0:/dev/ttyUSB0"
