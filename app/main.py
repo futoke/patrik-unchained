@@ -68,14 +68,15 @@ async def bg_worker():
             await asyncio.sleep(0.1)
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    bg_task = asyncio.create_task(bg_worker())
-    yield
-    bg_task.cancel()
+# @asynccontextmanager
+# async def lifespan(app: FastAPI):
+#     bg_task = asyncio.create_task(bg_worker())
+#     yield
+#     bg_task.cancel()
 
 
-app = FastAPI(lifespan=lifespan)
+# app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 
 
 @app.get("/")

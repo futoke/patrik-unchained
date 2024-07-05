@@ -3,6 +3,7 @@ version: '3'
 services:
   patrik-move:
     build: .
+    restart: always
     ports:
      - "80:80"
     volumes:
