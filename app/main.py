@@ -8,9 +8,8 @@ from contextlib import asynccontextmanager
 import serial
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
-# from fastapi.staticfiles import StaticFiles
-from lx16a import LX16A
-# from lewansoul_lx16a import ServoController
+from fastapi.staticfiles import StaticFiles
+from .lewansoul_lx16a_controller import ServoController
 
 
 # Set path for script.
@@ -50,8 +49,8 @@ class Action:
 
 
 async def bg_worker():
-    serial_port = serial.Serial('/dev/ttyUSB0', 115200, timeout=2)
-    # ctrl = ServoController(serial_port, timeout=5)
+    serial_port = serial.Serial('/dev/ttyUSB0', 9600, timeout=2)
+    ctrl = ServoController(serial_port, timeout=5)
 
     # steps = [
     #     {"time": 100, "servos": {1:525, 2:688, 3:550, 4:475, 5:762, 6:550, 7:525, 8:688, 9:550, 10:525, 11:762, 12:550, 13:475, 14:688, 15:550, 16:525, 17:762, 18:550}},
