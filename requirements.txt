@@ -1,3 +1,4 @@
 pyserial
 fastapi
 pydantic
+pylx16a
