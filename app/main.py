@@ -3,26 +3,26 @@ import asyncio
 import logging
 from contextlib import asynccontextmanager
 
-import serial
-from fastapi import FastAPI
-from fastapi.responses import FileResponse
-
-
 # Set path for script.
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
+import serial
+from lx16a import LX16A
+from fastapi import FastAPI
+from fastapi.responses import FileResponse
+
+
 queue = asyncio.Queue()
 logger = logging.getLogger('uvicorn.error')
 
-
 head_actions = [
-        {"time": 1000, "servos": {1:120, 2:25}},
-        {"time": 1000, "servos": {1:130, 2:100}},
-        {"time": 1000, "servos": {1:140, 2:190}},
-        {"time": 1000, "servos": {1:130, 2:100}}
-    ]
+    {"time": 1000, "servos": {1:120, 2:25}},
+    {"time": 1000, "servos": {1:130, 2:100}},
+    {"time": 1000, "servos": {1:140, 2:190}},
+    {"time": 1000, "servos": {1:130, 2:100}}
+]
 
 
 class Action:
@@ -45,8 +45,8 @@ class Action:
 
 
 async def bg_worker():
-    serial_port = serial.Serial('/dev/ttyUSB0', 9600, timeout=2)
-    ctrl = ServoController(serial_port, timeout=5)
+    # serial_port = serial.Serial('/dev/ttyUSB0', 9600, timeout=2)
+    # ctrl = ServoController(serial_port, timeout=5)
 
     # steps = [
     #     {"time": 100, "servos": {1:525, 2:688, 3:550, 4:475, 5:762, 6:550, 7:525, 8:688, 9:550, 10:525, 11:762, 12:550, 13:475, 14:688, 15:550, 16:525, 17:762, 18:550}},
