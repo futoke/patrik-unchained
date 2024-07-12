@@ -1,4 +1,5 @@
 import os
+import sys
 import asyncio
 import logging
 from contextlib import asynccontextmanager
@@ -6,9 +7,9 @@ from contextlib import asynccontextmanager
 # Set path for script.
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
+sys.path.append(dname)
 os.chdir(dname)
 
-import serial
 from lx16a import LX16A
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
