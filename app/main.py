@@ -1,15 +1,11 @@
 import os
-import time
 import asyncio
 import logging
-from typing import Union
 from contextlib import asynccontextmanager
 
 import serial
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
-from .lewansoul_lx16a_controller import ServoController
 
 
 # Set path for script.
