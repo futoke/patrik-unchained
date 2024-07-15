@@ -13,22 +13,16 @@ os.chdir(dname)
 import yaml
 from lx16a import LX16A, ServoTimeoutError
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from pydantic import BaseModel
 
 
 queue = asyncio.Queue()
 logger = logging.getLogger('uvicorn.error')
 
-head_actions = [
-    {"time": 1000, "servos": {1:120, 2:25}},
-    {"time": 1000, "servos": {1:130, 2:100}},
-    {"time": 1000, "servos": {1:140, 2:190}},
-    {"time": 1000, "servos": {1:130, 2:100}}
-]
 
-
-class Action:
-
+class Actions:
     def __init__(self) -> None:
         LX16A.initialize("/dev/ttyUSB0", 0.1)
 
@@ -37,35 +31,35 @@ class Action:
 
         logger.info(f"Init servos.")
         self.servos = {}
+        self.actions = {}
         for name in config_data["servos"]:
             try:
                 self.servos[name] = LX16A(config_data["servos"][name])
             except ServoTimeoutError as ste:
-                logger.info(f'Servo "{name}" is not responded')
+                logger.info(f'Servo "{name}" is not responded.')
 
         with open("actions.yml", 'r') as fh:
             self.actions = yaml.safe_load(fh)
 
-    async def do_action(self):
-        action = self.actions["move head"]
-        for step in action:
+    async def do_action(self, action_name):
+        for step in self.actions[action_name]:
             action_time = step["time"]
             positions = step["positions"]
 
-            for servo_id in self.servos:
-                self.servos[servo_id].move(positions[servo_id], action_time)
+            # for servo_id in self.servos:
+            #     self.servos[servo_id].move(positions[servo_id], action_time)
 
             await asyncio.sleep(action_time / 1000)
+
+
+actions = Actions()
 
 
 async def bg_worker():
     state = "stop"
 
-    action = Action()
-
     while True:
-        await action.do_action()
-        logger.info("NYAA")
+        await actions.do_action("move head")
 
     # while True:
     #     if not queue.empty():
@@ -92,18 +86,23 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
-# app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 @app.get("/")
 def read_root():
-    return FileResponse('index.html')
+    return FileResponse('static/index.html')
 
 
 @app.get("/cmd/{cmd_name}/")
 async def do_cmd(cmd_name: str):
     await queue.put(cmd_name)
     return
+
+
+@app.get("/get-all-actions")
+def get_all_actions() -> list[str]:
+    return actions.actions.keys()
 
 
 if __name__ == "__main__":

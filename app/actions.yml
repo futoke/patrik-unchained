@@ -1,4 +1,22 @@
-move head:
+Move head:
+    - time: 1000
+      positions: {head: 120, neck: 25}
+    - time: 1000
+      positions: {head: 130, neck: 100}
+    - time: 1000
+      positions: {head: 140, neck: 190}
+    - time: 1000
+      positions: {head: 130, neck: 100}
+Nope:
+    - time: 1000
+      positions: {head: 120, neck: 25}
+    - time: 1000
+      positions: {head: 130, neck: 100}
+    - time: 1000
+      positions: {head: 140, neck: 190}
+    - time: 1000
+      positions: {head: 130, neck: 100}
+Yeah:
     - time: 1000
       positions: {head: 120, neck: 25}
     - time: 1000

@@ -29,13 +29,44 @@
             background-color: #3e8e41;
         }
     </style>
+
+    <script defer src="/static/alpine.js">
+
+    </script>
+
+<script>
+    function getAllActions() {
+        return {
+            selectedAction: null,
+            actions: [],
+            getData() {
+                fetch('/get-all-actions')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.actions = data; 
+                        this.selectedAction = data[0]
+                    });          
+            }  
+        }
+    }
+</script>
 </head>
 
 <body>
-    <div class="btn-group">
+    <!-- <div class="btn-group">
         <button onclick = "(() => fetch('/cmd/start'))()">START</button>
         <button onclick = "(() => fetch('/cmd/stop'))()">STOP</button>
         <button onclick = "(() => fetch('/cmd/greet'))()">GREET</button>
+    </div> -->
+
+    <div x-data="getAllActions()" x-init="getData()">
+        <select x-model="selectedAction">
+            <template x-for="action in actions">
+                <option :value="action" x-text="action"></option>                                                                 
+            </template>
+        </select>
+
+        <p>Selected: <span x-text="selectedAction"></span></p>
     </div>
 </body>
 </html>
