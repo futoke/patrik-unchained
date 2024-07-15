@@ -1,0 +1,23 @@
+config:
+  head: 1
+  neck: 2
+  r1: 3
+  r2: 4
+  r3: 5
+  r4: 6
+  l1: 7
+  l2: 8
+  l3: 9
+  l4: 10
+
+actions:
+  - name: move head
+    steps:
+      - time: 1000
+        positions: {head: 120, neck: 25}
+      - time: 1000
+        positions: {head: 130, neck: 100}
+      - time: 1000
+        positions: {head: 140, neck: 190}
+      - time: 1000
+        positions: {head: 130, neck: 100}
