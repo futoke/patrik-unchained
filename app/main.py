@@ -10,7 +10,8 @@ dname = os.path.dirname(abspath)
 sys.path.append(dname)
 os.chdir(dname)
 
-from lx16a import LX16A
+import yaml
+from lx16a import LX16A, ServoTimeoutError
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 
@@ -31,18 +32,30 @@ class Action:
     def __init__(self) -> None:
         LX16A.initialize("/dev/ttyUSB0", 0.1)
 
-        self.servos = {1: LX16A(1), 2: LX16A(2)}
+        with open("config.yml", 'r') as fh:
+            config_data = yaml.safe_load(fh)
+
+        logger.info(f"Init servos.")
+        self.servos = {}
+        for name in config_data["servos"]:
+            try:
+                self.servos[name] = LX16A(config_data["servos"][name])
+            except ServoTimeoutError as ste:
+                logger.info(f'Servo "{name}" is not responded')
+
+        with open("actions.yml", 'r') as fh:
+            self.actions = yaml.safe_load(fh)
 
     async def do_action(self):
-        for action in head_actions:
-            action_time = action["time"]
-            positions = action["servos"]
+        action = self.actions["move head"]
+        for step in action:
+            action_time = step["time"]
+            positions = step["positions"]
 
-            # for servo_id in self.servos:
-            #     self.servos[servo_id].move(positions[servo_id], action_time)
+            for servo_id in self.servos:
+                self.servos[servo_id].move(positions[servo_id], action_time)
 
             await asyncio.sleep(action_time / 1000)
-
 
 
 async def bg_worker():
