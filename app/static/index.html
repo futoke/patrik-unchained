@@ -1,55 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        .btn-group {
-            margin: 0;
-            width: 99%;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-        .btn-group button {
-            background-color: #04AA6D;
-            border: 1px solid green;
-            color: white;
-            padding: 10px 24px;
-            cursor: pointer; 
-            font-size: 128px;
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
+    <link rel="stylesheet" href="/static/pure.css"> 
 
-        .btn-group button:not(:last-child) {
-            border-bottom: none;
+    <script defer src="/static/alpine.js"></script>
+
+    <script>
+        function getAllActions() {
+            return {
+                selectedAction: null,
+                actions: [],
+                getData() {
+                    fetch('/get-all-actions')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.actions = data; 
+                            this.selectedAction = data[0]
+                        });          
+                }  
+            }
         }
-
-        .btn-group button:hover {
-            background-color: #3e8e41;
-        }
-    </style>
-
-    <script defer src="/static/alpine.js">
-
     </script>
-
-<script>
-    function getAllActions() {
-        return {
-            selectedAction: null,
-            actions: [],
-            getData() {
-                fetch('/get-all-actions')
-                    .then(response => response.json())
-                    .then(data => {
-                        this.actions = data; 
-                        this.selectedAction = data[0]
-                    });          
-            }  
-        }
-    }
-</script>
 </head>
 
 <body>
@@ -59,14 +30,19 @@
         <button onclick = "(() => fetch('/cmd/greet'))()">GREET</button>
     </div> -->
 
-    <div x-data="getAllActions()" x-init="getData()">
-        <select x-model="selectedAction">
-            <template x-for="action in actions">
-                <option :value="action" x-text="action"></option>                                                                 
-            </template>
-        </select>
+    <div class="pure-g"></div>
+    <div class="pure-u-1-3"></div>
+        <div class="pure-u-1-3">
+            <div x-data="getAllActions()" x-init="getData()">
+                <select x-model="selectedAction">
+                    <template x-for="action in actions">
+                        <option :value="action" x-text="action"></option>                                                                 
+                    </template>
+                </select>
 
-        <p>Selected: <span x-text="selectedAction"></span></p>
+                <p>Selected: <span x-text="selectedAction"></span></p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
