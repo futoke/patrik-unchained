@@ -6,7 +6,7 @@ port = 80
 #root = "./public"
 
 #### Logging
-log-level = "error"
+log-level = "trace"
 
 #### Cache Control headers
 cache-control-headers = true
