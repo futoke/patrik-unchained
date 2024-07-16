@@ -31,7 +31,7 @@ https-redirect-from-hosts = "localhost"
 
 #### CORS & Security headers
 security-headers = true
-cors-allow-origins = "http://localhost:9001"
+cors-allow-origins = "*"
 
 #### Directory listing
 directory-listing = false
