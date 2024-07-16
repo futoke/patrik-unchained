@@ -2,16 +2,16 @@ version: '3'
 
 services:
 
-  patrik-move:
-    build: .
-    container_name: "patrik-move"
-    restart: always
-    ports:
-     - "80:80"
-    volumes:
-     - /home/khadas/patrik-unchained/app:/code/app
-    devices:
-    - "/dev/ttyUSB0:/dev/ttyUSB0"
+  # patrik-move:
+  #   build: .
+  #   container_name: "patrik-move"
+  #   restart: always
+  #   ports:
+  #    - "80:80"
+  #   volumes:
+  #    - /home/khadas/patrik-unchained/app:/code/app
+  #   devices:
+  #   - "/dev/ttyUSB0:/dev/ttyUSB0"
 
   patrik-ui:
     image: joseluisq/static-web-server:2-alpine

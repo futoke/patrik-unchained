@@ -54,7 +54,6 @@ class Actions:
 
 actions = Actions()
 
-
 async def bg_worker():
     state = "stop"
 
