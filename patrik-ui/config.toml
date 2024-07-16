@@ -21,13 +21,13 @@ compression-level = "default"
 #page50x = "./50x.html"
 
 #### HTTP/2 + TLS
-#http2 = false
-#http2-tls-cert = ""
-#http2-tls-key = ""
-#https-redirect = false
-#https-redirect-host = "localhost"
-#https-redirect-from-port = 80
-#https-redirect-from-hosts = "localhost"
+http2 = false
+http2-tls-cert = ""
+http2-tls-key = ""
+https-redirect = false
+https-redirect-host = "localhost"
+https-redirect-from-port = 80
+https-redirect-from-hosts = "localhost"
 
 #### CORS & Security headers
 security-headers = true
