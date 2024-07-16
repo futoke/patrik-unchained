@@ -51,7 +51,6 @@ class Actions:
 
             await asyncio.sleep(action_time / 1000)
 
-
 actions = Actions()
 
 async def bg_worker():
