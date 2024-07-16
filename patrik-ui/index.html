@@ -9,7 +9,7 @@
                 selectedAction: null,
                 actions: [],
                 getData() {
-                    fetch('http://localhost:9001/get-all-actions/')
+                    fetch('http://localhost:9001/get-all-actions/', {mode: 'cors'})
                         .then(response => response.json())
                         .then(data => {
                             this.actions = data; 
