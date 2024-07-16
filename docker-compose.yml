@@ -19,7 +19,7 @@ services:
     environment:
       - *DIR
     volumes:
-     - ${DIR}/app:/code/app
+     - "${DIR}/app:/code/app"
     devices:
     - "/dev/ttyUSB0:/dev/ttyUSB0"
 
@@ -36,7 +36,7 @@ services:
       - SERVER_ROOT=/var/public
       # - SERVER_CONFIG_FILE=/etc/config.toml
     volumes:
-      -  ${DIR}/patrik-ui:/var/public
+      -  "${DIR}/patrik-ui:/var/public"
       # - ./config.toml:/etc/config.toml
 
   patrik-video:
