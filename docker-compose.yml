@@ -46,5 +46,6 @@ services:
     image: ghcr.io/motioneye-project/motioneye:edge
     devices:
       - "/dev/video0:/dev/video0"
+      - "/dev/video1:/dev/video1"
     volumes:
       - /etc/localtime:/etc/localtime:ro
