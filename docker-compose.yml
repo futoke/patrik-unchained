@@ -56,8 +56,10 @@ services:
     environment:
       # Note: those envs are customizable but also optional
       - SERVER_ROOT=/public
+      - SERVER_CONFIG_FILE=/etc/config.toml
     volumes:
       - /home/khadas/patrik-unchained/patrik-ui:/var/public
+      - /home/khadas/patrik-unchained/patrik-ui/config.toml:/etc/config.toml
       # Or use an existing Docker volume
       # - website_data:/public
     labels:
