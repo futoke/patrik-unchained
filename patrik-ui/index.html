@@ -9,7 +9,7 @@
                 selectedAction: null,
                 actions: [],
                 getData() {
-                    fetch('http://localhost:9001/get-all-actions/', {method: 'GET', mode: 'cors'})
+                    fetch('http://localhost:9001/get-all-actions', {method: 'GET', mode: 'cors'})
                         .then(response => response.json())
                         .then(data => {
                             this.actions = data; 
@@ -46,7 +46,6 @@
                     </button>
                 </fieldset>
             </form>
-            <a href="http://localhost:9001/get-all-actions/">TEST</a>
             <p>Selected: <span x-text="selectedAction"></span></p>
 
         </div>
