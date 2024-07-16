@@ -64,7 +64,7 @@ services:
       # - website_data:/public
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=traefik_net"
+      - "traefik.docker.network=host"
       - "traefik.http.routers.website.entrypoints=web"
       - "traefik.http.routers.website.rule=Host(`website.localhost`)"
       - "traefik.http.routers.website.priority=1"
