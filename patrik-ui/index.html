@@ -9,7 +9,7 @@
                 selectedAction: null,
                 actions: [],
                 getData() {
-                    fetch('patrik-move/get-all-actions')
+                    fetch('http://patrik-move/get-all-actions')
                         .then(response => response.json())
                         .then(data => {
                             this.actions = data; 
@@ -41,7 +41,7 @@
                     <button 
                         type="submit"
                         class="pure-button pure-button-primary"
-                        @click="(() => fetch(`patrik-move/cmd/${selectedAction}`))()">
+                        @click="(() => fetch(`http://patrik-move/cmd/${selectedAction}`))()">
                         Sign in
                     </button>
                 </fieldset>
