@@ -1,8 +1,10 @@
 version: '3'
 
 services:
+
   patrik-move:
     build: .
+    container_name: "patrik-move"
     restart: always
     ports:
      - "80:80"
@@ -10,3 +12,17 @@ services:
      - /home/khadas/patrik-unchained/app:/code/app
     devices:
     - "/dev/ttyUSB0:/dev/ttyUSB0"
+
+  patrik-ui:
+    image: joseluisq/static-web-server:2-alpine
+    container_name: "patrik-ui"
+    ports:
+      - 80:8888
+    restart: always
+    environment:
+      # Note: those envs are customizable but also optional
+      - SERVER_ROOT=/var/public
+      # - SERVER_CONFIG_FILE=/etc/config.toml
+    volumes:
+      - ./patrik-ui:/var/public
+      # - ./config.toml:/etc/config.toml

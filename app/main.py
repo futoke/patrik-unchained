@@ -96,6 +96,7 @@ def read_root():
 
 @app.get("/cmd/{cmd_name}/")
 async def do_cmd(cmd_name: str):
+    logger.info(f"Action '{cmd_name}' received.")
     await queue.put(cmd_name)
     return
 
