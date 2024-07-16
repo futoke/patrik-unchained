@@ -36,15 +36,15 @@ services:
       - ${PATH}/patrik-ui:/var/public
       # - ./config.toml:/etc/config.toml
 
-  patrik-video:
-    network_mode: host
-    container_name: "patrik-video"
-    restart: always
-    # ports:
-    #   - "8081:8081"
-    #   - "8765:8765"
-    image: ghcr.io/motioneye-project/motioneye:edge
-    devices:
-      - "/dev/video0:/dev/video0"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
+  # patrik-video:
+  #   network_mode: host
+  #   container_name: "patrik-video"
+  #   restart: always
+  #   # ports:
+  #   #   - "8081:8081"
+  #   #   - "8765:8765"
+  #   image: ghcr.io/motioneye-project/motioneye:edge
+  #   devices:
+  #     - "/dev/video0:/dev/video0"
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro
