@@ -13,7 +13,6 @@ cache-control-headers = true
 
 #### Auto Compression
 compression = false
-compression-static = false
 compression-level = "default"
 
 #### Error pages
@@ -65,7 +64,7 @@ log-remote-address = false
 redirect-trailing-slash = true
 
 #### Check for existing pre-compressed files
-compression-static = true
+compression-static = false
 
 #### Health-check endpoint (GET or HEAD `/health`)
 health = false
