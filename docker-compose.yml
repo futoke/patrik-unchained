@@ -1,30 +1,50 @@
-version: '3'
+x-var: &PATH
+  /home/khadas/patrik-unchained
 
 services:
 
   patrik-move:
-    build: .
+    build:
+      dockerfile_inline: |
+        FROM python:3.11
+        WORKDIR /code
+        COPY ${PATH}/requirements.txt /code/requirements.txt
+        RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+        CMD ["fastapi", "run", "app/main.py", "--port", "80"]
     container_name: patrik-move
-    hostname: patrik-move
+    network_mode: host
     restart: always
-    ports:
-     - "80:80"
+    # ports:
+    #  - "9000:80"
     volumes:
-     - /home/khadas/patrik-unchained/app:/code/app
+     - ${PATH}/app:/code/app
     devices:
     - "/dev/ttyUSB0:/dev/ttyUSB0"
 
   patrik-ui:
     image: joseluisq/static-web-server:2-alpine
     container_name: patrik-ui
-    hostname: patrik-ui
-    ports:
-      - 8888:80
+    network_mode: host
+    # ports:
+    #   - 80:80
     restart: always
     environment:
       # Note: those envs are customizable but also optional
       - SERVER_ROOT=/var/public
       # - SERVER_CONFIG_FILE=/etc/config.toml
     volumes:
-      - /home/khadas/patrik-unchained/patrik-ui:/var/public
+      - ${PATH}/patrik-ui:/var/public
       # - ./config.toml:/etc/config.toml
+
+  patrik-video:
+    network_mode: host
+    container_name: "patrik-video"
+    restart: always
+    # ports:
+    #   - "8081:8081"
+    #   - "8765:8765"
+    image: ghcr.io/motioneye-project/motioneye:edge
+    devices:
+      - "/dev/video0:/dev/video0"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
