@@ -17,7 +17,7 @@ services:
     image: joseluisq/static-web-server:2-alpine
     container_name: "patrik-ui"
     ports:
-      - 80:8888
+      - 8888:80
     restart: always
     environment:
       # Note: those envs are customizable but also optional
