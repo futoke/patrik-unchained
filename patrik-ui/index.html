@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="pure.css"> 
-    <script defer src="alpine.js"></script>
+    <link rel="stylesheet" href="/ui/pure.css"> 
+    <script defer src="/ui/alpine.js"></script>
     <script>
         function getAllActions() {
             return {
                 selectedAction: null,
                 actions: [],
                 getData() {
-                    fetch('http://localhost:9001/get-all-actions/')
+                    fetch('/move/get-all-actions/')
                         .then(response => response.json())
                         .then(data => {
                             this.actions = data; 
@@ -42,7 +42,7 @@
                     <button 
                         type="submit"
                         class="pure-button pure-button-primary"
-                        @click="(() => fetch(`http://localhost:9001/cmd/${selectedAction}`))()">
+                        @click="(() => fetch(`/move/cmd/${selectedAction}`))()">
                         Sign in
                     </button>
                 </fieldset>
