@@ -41,6 +41,9 @@ class Actions:
         with open("actions.yml", 'r') as fh:
             self.actions = yaml.safe_load(fh)
 
+    def get_all_actions(self) -> list[str]:
+        return list(self.actions.keys())
+
     async def do_action(self, action_name):
         for step in self.actions[action_name]:
             action_time = step["time"]
@@ -101,7 +104,7 @@ async def do_cmd(cmd_name: str):
 
 @app.get("/get-all-actions")
 def get_all_actions() -> list[str]:
-    return actions.actions.keys()
+    return actions.get_all_actions()
 
 
 if __name__ == "__main__":
