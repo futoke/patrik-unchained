@@ -12,8 +12,11 @@
                     fetch('/move/get-all-actions/')
                         .then(response => response.json())
                         .then(data => {
-                            this.actions = data; 
-                            this.selectedAction = data[0]
+                            console.log(this.actions)
+                            if (this.actions.length == 0) {
+                                this.actions = data; 
+                                this.selectedAction = data[0]
+                            }
                         })
                         .catch(error => console.error(error));          
                 }  
@@ -40,9 +43,8 @@
                         </template>
                     </select>
                     <button 
-                        type="submit"
                         class="pure-button pure-button-primary"
-                        @click="(() => fetch(`/move/cmd/${selectedAction}`))()">
+                        @click="(() => fetch(`/move/do_action/${selectedAction}`))()">
                         Sign in
                     </button>
                 </fieldset>
