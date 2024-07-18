@@ -35,15 +35,28 @@ services:
       - ./patrik-ui:/var/public
       - ./patrik-ui/config.toml:/etc/config.toml
 
-  patrik-video:
-    container_name: "patrik-video"
+  patrik-camera:
+    container_name: "patrik-camera"
     restart: always
     ports:
-      - "8081:8081"
-      - "8765:8765"
-    image: ghcr.io/motioneye-project/motioneye:edge
+      - 8081:8081
+      - 8765:8765
+    # image: ghcr.io/motioneye-project/motioneye:edge
+    image: ccrisan/motioneye:master-armhf
     devices:
       - "/dev/video0:/dev/video0"
       - "/dev/video1:/dev/video1"
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - /patrik-camera:/etc/motioneye
+
+  # patril-camera:
+  #   image: romankspb/webcam
+  #   container_name: "patrik-camera"
+  #   restart: always
+  #   ports:
+  #    - 8080:8080
+  #    - 8082:8082
+  #   devices:
+  #     - /dev/video0:/dev/video0
+  #     - /dev/video1:/dev/video1
