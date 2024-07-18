@@ -14,23 +14,19 @@ services:
       dockerfile_inline: |
         FROM python:3.11
         WORKDIR /code
-        COPY  ./requirements.txt /code/requirements.txt
+        COPY  ./patrik-move/requirements.txt /code/requirements.txt
         RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-        CMD ["fastapi", "run", "app/main.py", "--port", "80"]
+        CMD ["fastapi", "run", "app/main.py", "--port", "80", "--root-path", "/move"]
     container_name: patrik-move
     restart: always
-    # ports:
-    #  - "9001:80"
     volumes:
-     - ./app:/code/app
+     - ./patrik-move/app:/code/app
     devices:
     - "/dev/ttyUSB0:/dev/ttyUSB0"
 
   patrik-ui:
     image: joseluisq/static-web-server:2-alpine
     container_name: patrik-ui
-    # ports:
-    #   - 9002:80
     restart: always
     environment:
       - SERVER_ROOT=/var/public

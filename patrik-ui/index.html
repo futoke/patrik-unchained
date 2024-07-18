@@ -39,7 +39,7 @@
             <!-- <form class="pure-form" x-data="{ message: '' }"> -->
             <div class="pure-form"
                 x-data="{ actions: [], currentAction: '' }"
-                x-init="actions = await (await fetch('/move/get-all-actions')).json()"
+                x-init="actions = await (await fetch('/move/get-all-actions')).json(); currentAction = actions[0]"
             >
                 <fieldset>
                     <!-- <select x-model="selectedAction"> -->
