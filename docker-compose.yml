@@ -16,7 +16,7 @@ services:
         WORKDIR /code
         COPY  ./patrik-move/requirements.txt /code/requirements.txt
         RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-        CMD ["fastapi", "run", "app/main.py", "--port", "80", "--root-path", "/move"]
+        CMD ["fastapi", "run", "app/main.py", "--port", "80"]
     container_name: patrik-move
     restart: always
     volumes:

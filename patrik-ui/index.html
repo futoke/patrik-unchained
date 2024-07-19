@@ -3,26 +3,6 @@
 <head>
     <link rel="stylesheet" href="/ui/pure.css"> 
     <script defer src="/ui/alpine.js"></script>
-    <script>
-        function getAllActions() {
-            return {
-                // selectedAction: null,
-                actions: [],
-                getData() {
-                    fetch('/move/get-all-actions/')
-                        .then(response => response.json())
-                        .then(data => {
-                            this.actions = data;
-                            // if (this.actions.length == 0) {
-                            //     this.actions = data; 
-                            //     this.selectedAction = data[0]
-                            // }
-                        })
-                        .catch(error => console.error(error));          
-                }  
-            }
-        }
-    </script>
 </head>
 
 <body>
@@ -36,7 +16,6 @@
                 x-init="actions = await (await fetch('/move/get-all-actions')).json(); currentAction = actions[0]"
             >
                 <fieldset>
-                    <!-- <select x-model="selectedAction"> -->
                     <select x-model="currentAction">
                         <template x-for="action in actions">
                             <option :value="action" x-text="action"></option>                                                                 
@@ -51,8 +30,6 @@
                     <p>Selected: <span x-text="currentAction"></span></p>
                 </fieldset>
             </div>
-           
-
         </div>
     </div>
 </body>

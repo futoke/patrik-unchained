@@ -9,19 +9,18 @@ Move head:
       positions: {head: 130, neck: 100}
 Nope:
     - time: 1000
-      positions: {head: 120, neck: 25}
+      positions: {head: 133, neck: 30}
     - time: 1000
-      positions: {head: 130, neck: 100}
-    - time: 1000
-      positions: {head: 140, neck: 190}
-    - time: 1000
-      positions: {head: 130, neck: 100}
+      positions: {head: 133, neck: 180}
+    - time: 2000
+      positions: {head: 133, neck: 108}
 Yeah:
+    - time: 500
+      positions: {head: 110, neck: 108}
     - time: 1000
-      positions: {head: 120, neck: 25}
-    - time: 1000
-      positions: {head: 130, neck: 100}
-    - time: 1000
-      positions: {head: 140, neck: 190}
-    - time: 1000
-      positions: {head: 130, neck: 100}
+      positions: {head: 160, neck: 108}
+    - time: 500
+      positions: {head: 133, neck: 108}
+Idle:
+    - time: 100
+      positions: {head: 133, neck: 108}

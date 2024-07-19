@@ -49,34 +49,20 @@ class Actions:
             action_time = step["time"]
             positions = step["positions"]
 
-            # for servo_id in self.servos:
-            #     self.servos[servo_id].move(positions[servo_id], action_time)
+            for servo_id in self.servos:
+                self.servos[servo_id].move(positions[servo_id], action_time)
 
             await asyncio.sleep(action_time / 1000)
 
 actions = Actions()
 
 async def bg_worker():
-    state = "stop"
-
     while True:
-        await actions.do_action("move head")
-
-    # while True:
-    #     if not queue.empty():
-    #         state = await queue.get()
-    #     if state == "start":
-    #         for step in steps:
-    #             time = step["time"]
-    #             ctrl.move(step["servos"], time=time)
-    #             await asyncio.sleep(time / 1000)
-    #     if state == "greet":
-    #         for greet in greets:
-    #             time = greet["time"]
-    #             ctrl.move(greet["servos"], time=time)
-    #             await asyncio.sleep(time / 1000)
-    #     if state == "stop":
-    #         await asyncio.sleep(0.1)
+        if not queue.empty():
+            action_name = await queue.get()
+            await actions.do_action(action_name)
+        else:
+            await asyncio.sleep(0.1)
 
 
 @asynccontextmanager
