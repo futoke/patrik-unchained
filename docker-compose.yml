@@ -36,12 +36,11 @@ services:
       - ./patrik-ui/config.toml:/etc/config.toml
 
   patrik-camera:
-    container_name: "patrik-camera"
+    container_name: patrik-camera
     restart: always
     ports:
       - 8081:8081
       - 8765:8765
-    # image: ghcr.io/motioneye-project/motioneye:edge
     image: ccrisan/motioneye:master-armhf
     devices:
       - "/dev/video0:/dev/video0"
@@ -50,13 +49,33 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /patrik-camera:/etc/motioneye
 
-  # patril-camera:
-  #   image: romankspb/webcam
-  #   container_name: "patrik-camera"
-  #   restart: always
-  #   ports:
-  #    - 8080:8080
-  #    - 8082:8082
-  #   devices:
-  #     - /dev/video0:/dev/video0
-  #     - /dev/video1:/dev/video1
+  patrik-say:
+    container_name: patrik-say
+    ports:
+      - 9001:9001
+    build:
+      dockerfile_inline: |
+        FROM python:3.11
+        RUN apt update
+        RUN apt install -y pulseaudio ffmpeg libavcodec-extra
+        RUN export PULSE_SERVER=unix:${XDG_RUNTIME_DIR}/pulse/native
+        WORKDIR /code
+        COPY ./patrik-say/requirements.txt /code/requirements.txt
+        RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+        CMD ["fastapi", "run", "app/main.py", "--port", "9001"]
+    volumes:
+      - ./patrik-say/app:/code/app
+      - ${XDG_RUNTIME_DIR}/pulse/native:${XDG_RUNTIME_DIR}/pulse/native
+      - ~/.config/pulse/cookie:/root/.config/pulse/cookie
+    environment:
+      - PULSE_SERVER=unix:${XDG_RUNTIME_DIR}/pulse/native
+    devices:
+      - /dev/snd:/dev/snd 
+    restart: always
+
+  patrik-tts:
+    image: ghcr.io/aculeasis/rhvoice-rest:latest
+    container_name: patrik-tts
+    ports:
+      - 8080:8080 
+    restart: always
