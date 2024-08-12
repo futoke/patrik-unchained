@@ -1,0 +1,7 @@
+/node_modules/*
+/dist/*
+/bundle/*
+/base64/*
+*.swp
+/__pycache__
+/venv
