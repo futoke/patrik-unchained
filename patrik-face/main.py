@@ -1,10 +1,17 @@
 import asyncio
 from itertools import cycle
+from dataclasses import dataclass
 
 from fastapi import FastAPI, WebSocket
-# from fastapi.responses import HTMLResponse
 from fastapi.responses import FileResponse 
 from fastapi.staticfiles import StaticFiles
+
+from models import ModelExpression
+
+
+@dataclass
+class Face:
+    expression: str = "default"
 
 
 EXPRESSIONS = [
@@ -18,6 +25,8 @@ EXPRESSIONS = [
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static/dist", html=True), name="static")
+
+face = Face()
 
 
 html = """
@@ -57,10 +66,17 @@ async def get():
     return FileResponse('index.html')
 
 
+@app.get("/expression/{expression}")
+async def set_expression(expression: ModelExpression):
+    face.expression = expression
+    
+    return {"expression": expression}
+
+
+
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    exp_iter = cycle(EXPRESSIONS)
     await websocket.accept()
     while True:
-        await websocket.send_text(next(exp_iter))
+        await websocket.send_text(face.expression)
         await asyncio.sleep(1)
