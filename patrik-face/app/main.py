@@ -24,7 +24,7 @@ EXPRESSIONS = [
 ]
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="static/dist", html=True), name="static")
+app.mount("/static", StaticFiles(directory="app/static/dist", html=True), name="static")
 
 face = Face()
 
