@@ -9,7 +9,7 @@ services:
         CMD ["firefox", "--kiosk"]
     restart: always
     environment:
-      - DISPLAY=unix$DISPLAY
+      - DISPLAY=$DISPLAY
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
     # deploy:
