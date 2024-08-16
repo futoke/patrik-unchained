@@ -1,0 +1,35 @@
+services:
+  browser:
+    container_name: "browser"
+    build:
+      context: .
+      dockerfile_inline: |       
+        FROM ubuntu:20.04
+        RUN apt update && apt install -y firefox
+        CMD ["firefox", "--kiosk"]
+    restart: always
+    environment:
+      - DISPLAY=unix$DISPLAY
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: "1.00"
+    #       memory: 512M
+    #       pids: 1
+    #     reservations:
+    #       cpus: "0.5"
+    #       memory: 256M
+    # volumes:
+    #   - /tmp/.X11-unix:/tmp/.X11-unix
+      # - $HOME/Downloads:/home/chrome/Downloads
+      # - $HOME/.config/google-chrome/:/data
+      # - /dev/shm:/dev/shm
+    # devices:
+    #   - /dev/snd
+    #   - /dev/dri
+    # environment:
+    #   - name=DISPLAY=unix$DISPLAY 
+    # security-opt:
+    #   - "seccomp=$HOME/chrome.json"
