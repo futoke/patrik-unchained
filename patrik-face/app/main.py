@@ -29,41 +29,9 @@ app.mount("/static", StaticFiles(directory="app/static/dist", html=True), name="
 face = Face()
 
 
-html = """
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Chat</title>
-    </head>
-    <body>
-        <label id="lbl"></label>
-
-        <script>
-            var ws = new WebSocket("ws://localhost:8000/ws");
-
-            function createRandomString(length) {
-                const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                let result = "";
-
-                for (let i = 0; i < length; i++) {
-                    result += chars.charAt(Math.floor(Math.random() * chars.length));
-                }
-                return result;
-            }
-            
-            ws.onmessage = function(event) {
-                let labelElement = document.getElementById("lbl");
-                labelElement.innerText = createRandomString(16);
-            };
-        </script>
-    </body>
-</html>
-"""
-
-
 @app.get("/")
 async def get():
-    return FileResponse('index.html')
+    return FileResponse('app/index.html')
 
 
 @app.get("/expression/{expression}")
