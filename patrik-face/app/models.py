@@ -56,7 +56,7 @@ class ExpressionsRus(str, Enum):
     happy              = "счастливый"             
     in_love            = "влюбленный"                
     mischievous        = "озорной"                        
-    realized_something = "понял что то"                   
+    realized_something = "понял что-то"                   
     sad                = "грустный"                  
     sassy              = "дерзкий"                     
     scared             = "испуганный"                   
@@ -68,7 +68,7 @@ class ExpressionsRus(str, Enum):
     tired              = "усталый",                        
     upset              = "расстроенный"                       
     winking            = "подмигивающий"                        
-    wow                = "ух ты"
+    wow                = "ух-ты"
 
 
 class Expressions(str, Enum):
