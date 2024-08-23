@@ -1,50 +1,46 @@
 import asyncio
-from itertools import cycle
-from dataclasses import dataclass
+from typing import Annotated
 
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, Depends
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import FileResponse 
 from fastapi.staticfiles import StaticFiles
 
-from models import ModelExpression
+from models import Face, ExpressionsRus
 
-
-@dataclass
-class Face:
-    expression: str = "default"
-
-
-EXPRESSIONS = [
-    "annoyed", "anxious", "apologetic", "awkward", "blinking", "bored",
-    "crying", "default", "determined", "embarrased", "evil", "excited", 
-    "exhausted", "flustered", "furious", "giggle", "happy", "in-love",
-    "mischievous", "realized-something", "sad", "sassy", "scared", "shocked",
-    "snoozing", "starstruck", "stuck-up", "thinking", "tired", "upset",
-    "winking", "wow"
-]
 
 app = FastAPI()
+app.face = None
 app.mount("/static", StaticFiles(directory="app/static/dist", html=True), name="static")
-
-face = Face()
 
 
 @app.get("/")
-async def get():
+async def get_main_page():
     return FileResponse('app/index.html')
 
 
-@app.get("/expression/{expression}")
-async def set_expression(expression: ModelExpression):
-    face.expression = expression
-    
-    return {"expression": expression}
+@app.post("/set_face/")
+async def set_face(face: Face):
+    app.face = face
+    return {"face": face}
 
+
+@app.get("/get_expressions/")
+async def get_expressions():
+    expressions = {}
+
+    for exp in ExpressionsRus:
+        expressions[exp] = exp.name
+
+    return expressions
 
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     while True:
-        await websocket.send_text(face.expression)
         await asyncio.sleep(1)
+
+        if app.face:
+            # await websocket.send_text(app.face.expression.name)
+            await websocket.send_json(jsonable_encoder(app.face))

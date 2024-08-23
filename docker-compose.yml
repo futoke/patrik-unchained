@@ -81,6 +81,7 @@ services:
     restart: always
 
   patrik-face:
+      stop_signal: SIGKILL
       build:
         context: .
         dockerfile_inline: |
