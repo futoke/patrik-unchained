@@ -8,7 +8,7 @@ import flet as ft
 
 async def get_expressions():
     async with httpx.AsyncClient() as client:
-        r = await client.get("http://localhost:8888/get_expressions/")
+        r = await client.get("http://patrik-face/get_expressions/")
         return r.json()
 
 
@@ -19,7 +19,7 @@ async def main(page: ft.Page):
 
         async with httpx.AsyncClient() as client:
             await client.post(
-                "http://localhost:8888/set_face/",
+                "http://patrik-face/set_face/",
                 json={"expression": sended_value}
             )
 

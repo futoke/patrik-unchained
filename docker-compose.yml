@@ -24,16 +24,35 @@ services:
     devices:
     - "/dev/ttyUSB0:/dev/ttyUSB0"
 
-  patrik-ui:
+  patrik-ui-old:
     image: joseluisq/static-web-server:2-alpine
-    container_name: patrik-ui
+    container_name: patrik-ui-old
     restart: always
     environment:
       - SERVER_ROOT=/var/public
       - SERVER_CONFIG_FILE=/etc/config.toml
     volumes:
-      - ./patrik-ui:/var/public
-      - ./patrik-ui/config.toml:/etc/config.toml
+      - ./patrik-ui-old:/var/public
+      - ./patrik-ui-old/config.toml:/etc/config.toml
+
+  patrik-ui:
+      stop_signal: SIGKILL
+      depends_on:
+        - patrik-face
+      build:
+        context: .
+        dockerfile_inline: |
+          FROM python:3.12
+          WORKDIR /code
+          COPY  ./patrik-ui/requirements.txt /code/requirements.txt
+          RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+          CMD ["python", "-u", "app/main.py"]
+      container_name: patrik-ui-new
+      ports:
+      - 80:8000
+      restart: always
+      volumes:
+      - ./patrik-ui/app:/code/app
 
   patrik-camera:
     container_name: patrik-camera
@@ -97,7 +116,7 @@ services:
       volumes:
       - ./patrik-face/app:/code/app
 
-  patrik-pyside6:
+  patrik-screen:
     stop_signal: SIGKILL
     build:
       context: .
@@ -139,11 +158,11 @@ services:
         && rm -rf /var/lib/apt/lists/*
 
         WORKDIR /code
-        COPY  ./patrik-pyside6/requirements.txt /code/requirements.txt
+        COPY  ./patrik-screen/requirements.txt /code/requirements.txt
         RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
         CMD ["python", "app/main.py"]
 
-    container_name: patrik-pyside6
+    container_name: patrik-screen
     depends_on:
       - patrik-face
     user: qtuser
@@ -159,6 +178,6 @@ services:
       # - XDG_RUNTIME_DIR=/tmp
       # - XDG_SESSION_TYPE=x11
     volumes:
-      - ./patrik-pyside6/app:/code/app
+      - ./patrik-screen/app:/code/app
       - /tmp/.X11-unix:/tmp/.X11-unix
       - /dev/dri:/dev/dri
