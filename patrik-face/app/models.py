@@ -10,6 +10,11 @@ class Eyes(str, Enum):
     right_eye = "right_eye"
 
 
+class EyesRus(str, Enum):
+    left_eye = "левый глаз"
+    right_eye = "правый глаз"
+
+
 class Easing(str, Enum):
     linear      = "linear"
     ease_in     = "ease_in"
@@ -34,6 +39,18 @@ class Animations(str, Enum):
     fluctuating_upper = "fluctuating_upper"
     twitching_lower   = "twitching_lower"
     snoozing          = "snoozing"
+
+
+class AnimationsRus(str, Enum):
+    wink                = "подмигивание"
+    widen               = "расширение"
+    eye_roll            = "вращение глаз"
+    tear_drop           = "слезинка"
+    blinking            = "мигание"
+    fluctuating         = "колебание"
+    fluctuating_upper   = "колебание верх"
+    twitching_lower     = "подергивание"
+    snoozing            = "дремота"
 
 
 class ExpressionsRus(str, Enum):
@@ -103,7 +120,23 @@ class Expressions(str, Enum):
     tired              = "tired"             
     upset              = "upset"             
     winking            = "winking"           
-    wow                = "wow"               
+    wow                = "wow"
+
+
+class AnimationEffects(str, Enum):
+    swoosh        = "swoosh"     
+    road_runner   = "road-runner"
+    splat         = "splat"      
+    jelly         = "jelly"      
+    bounce        = "bounce"     
+
+
+class AnimationEffectsRus(str, Enum):
+    swoosh        = "свист"     
+    road_runner   = "дорожный бегун"
+    splat         = "шлепок"      
+    jelly         = "желе"      
+    bounce        = "прыжок"    
 
 
 class Gaze(BaseModel):
@@ -132,7 +165,6 @@ class Animation(BaseModel):
 
 class Face(BaseModel):
     expression: Expressions
-    # expression_rus: ExpressionsRus | None = None
     gaze: Gaze | None = None
     animation: Animation | None = None
                

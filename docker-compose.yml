@@ -47,7 +47,7 @@ services:
           COPY  ./patrik-ui/requirements.txt /code/requirements.txt
           RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
           CMD ["python", "-u", "app/main.py"]
-      container_name: patrik-ui-new
+      container_name: patrik-ui
       ports:
       - 80:8000
       restart: always
@@ -160,7 +160,7 @@ services:
         WORKDIR /code
         COPY  ./patrik-screen/requirements.txt /code/requirements.txt
         RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-        CMD ["python", "app/main.py"]
+        CMD ["python", "-u", "app/main.py"]
 
     container_name: patrik-screen
     depends_on:
