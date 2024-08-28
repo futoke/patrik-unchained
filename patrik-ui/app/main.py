@@ -9,6 +9,47 @@ import httpx
 import flet as ft
 
 
+class ControlBox(ft.Container):
+    def __init__(self, content):
+        super().__init__()
+
+        self.content = content
+        self.border_radius = 10
+        self.width = 300
+        self.padding = 10
+        self.margin = 10
+        self.bgcolor = ft.colors.GREY_100
+
+
+class Test(ft.Column):
+    def __init__(self):
+        super().__init__()
+        
+        self.chk = ft.Checkbox(
+            label="Включить", 
+            value=True,
+            on_change=self.chk_changed
+        )
+        self.btn_1 = ft.ElevatedButton("Button 1")
+        self.btn_2 = ft.ElevatedButton("Button 2")
+        self.btn_3 = ft.ElevatedButton("Button 3")
+        self.btn_4 = ft.ElevatedButton("Button 4")
+
+        self.controls = [
+            self.chk,
+            self.btn_1,
+            self.btn_2,
+            self.btn_3,
+            self.btn_4,
+        ]
+
+    def chk_changed(self, e):
+        for ctrl in self.controls:
+            if isinstance(ctrl, ft.ElevatedButton):
+                ctrl.disabled = not self.chk.value
+                ctrl.update()
+
+
 async def get_data(url):
     async with httpx.AsyncClient() as client:
         r = await client.get(url)
@@ -53,12 +94,55 @@ async def main(page: ft.Page):
         options=[ft.dropdown.Option(anim) for anim in animations], 
     )
 
-    page.add(
-        expression_dropdown,
-        animations_dropdown,
-        set_face_btn,
-        output_text
+
+    anim_1 = ft.Column(
+        controls= [
+            expression_dropdown,
+            animations_dropdown,
+            set_face_btn,
+            output_text
+        ],
+        width=300
     )
+
+    card = ft.Column(
+        controls=[
+            ft.Row(
+                controls=[
+                    anim_1,
+                    ControlBox(Test())
+                ]
+            ),
+            ft.Row(
+                controls=[
+                    ft.Text("HELLO"),
+                    ft.Text("HELLO")
+                ]
+            )
+        ]
+    )
+
+    t = ft.Tabs(
+        selected_index=0,
+        animation_duration=300,
+        expand=True,
+        tabs=[
+            ft.Tab(
+                text="Эмоции",
+                content=card,
+                icon=ft.icons.FACE_RETOUCHING_NATURAL),
+            ft.Tab(
+                tab_content=ft.Icon(ft.icons.SEARCH),
+            ),
+            ft.Tab(
+                text="Tab 3",
+                icon=ft.icons.SETTINGS,
+                content=ft.Text("This is Tab 3"),
+            ),
+        ],
+    )
+
+    page.add(t)
 
 ft.app(target=main)
 
