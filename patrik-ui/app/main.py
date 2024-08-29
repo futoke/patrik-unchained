@@ -2,11 +2,20 @@
 # sudo apt install libmpv-dev libmpv2
 # sudo ln -s /usr/lib/x86_64-linux-gnu/libmpv.so /usr/lib/libmpv.so.1
 
-
+import json
 import logging
 
 import httpx
 import flet as ft
+
+
+async def get_data(url):
+    async with httpx.AsyncClient() as client:
+        r = await client.get(url)
+        if r.status_code == httpx.codes.OK:
+            return r.json()
+        else:
+            return {"пусто": None}
 
 
 class ControlBox(ft.Container):
@@ -19,6 +28,66 @@ class ControlBox(ft.Container):
         self.padding = 10
         self.margin = 10
         self.bgcolor = ft.colors.GREY_100
+
+
+class GazeCard(ft.Column):
+    def __init__(self, easing):
+        super().__init__()
+        
+        self.chk = ft.Checkbox(
+            label="Включить", 
+            value=True,
+            on_change=self.chk_changed
+        )
+        self.speed = ft.TextField(
+            label="Скорость движения глаз",
+            hint_text="Используйте значения в диапазоне от 10 до 100",
+            input_filter=ft.NumbersOnlyInputFilter(), 
+            value="100"
+        )
+
+        self.easing = ft.Dropdown(
+            label="Тип движения",
+            options=[ft.dropdown.Option(ease) for ease in easing], 
+        )
+
+        self.dir = ft.Row(
+            controls=[
+                ft.TextField(
+                    expand=True,
+                    input_filter=ft.InputFilter(
+                        allow=True, 
+                        regex_string=r"[.0-9]", 
+                        replacement_string=""
+                    ),
+                    label="Смещение по X",
+                    value="0.5"
+                ),
+                ft.TextField(
+                    expand=True,
+                    input_filter=ft.InputFilter(
+                        allow=True, 
+                        regex_string=r"[.0-9]", 
+                        replacement_string=""
+                    ),
+                    label="Смещение по Y",
+                    value="0.5"
+                )
+            ]
+        )
+
+        self.controls = [
+            self.chk,
+            self.speed,
+            self.easing,
+            self.dir
+        ]
+
+    def chk_changed(self, e):
+        for ctrl in self.controls:
+            if not isinstance(ctrl, ft.Checkbox):
+                ctrl.disabled = not self.chk.value
+                ctrl.update()
 
 
 class Test(ft.Column):
@@ -50,25 +119,25 @@ class Test(ft.Column):
                 ctrl.update()
 
 
-async def get_data(url):
-    async with httpx.AsyncClient() as client:
-        r = await client.get(url)
-        if r.status_code == httpx.codes.OK:
-            return r.json()
-        else:
-            return {"пусто": None}
-
-
 async def main(page: ft.Page):
 
     async def set_face_clicked(e):
-        sended_value = expressions[expression_dropdown.value].replace("_", "-")
-        output_text.value = f"Dropdown value is:  {sended_value}"
+        response = {
+            "expression": "",
+            "gaze": {
+                "easing": "",
+                "speed": 50,
+                "direction": [0.5, 0.5]
+            }
+        }
 
+        response["expression"] = expressions[expression_dropdown.value].replace("_", "-")
+        logging.error(card.controls[1].controls[0].content.speed.value)
+        
         async with httpx.AsyncClient() as client:
             await client.post(
-                "http://patrik-face/set_face/",
-                json={"expression": sended_value}
+                "http://patrik-face/set_face/", 
+                json=json.dumps(response)
             )
         page.update()
 
@@ -105,6 +174,8 @@ async def main(page: ft.Page):
         width=300
     )
 
+    easing = await get_data("http://patrik-face/get_easing/")
+
     card = ft.Column(
         controls=[
             ft.Row(
@@ -115,8 +186,7 @@ async def main(page: ft.Page):
             ),
             ft.Row(
                 controls=[
-                    ft.Text("HELLO"),
-                    ft.Text("HELLO")
+                    ControlBox(GazeCard(easing))
                 ]
             )
         ]

@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from typing import Annotated
 
 from fastapi import FastAPI, WebSocket, Depends
@@ -8,6 +9,8 @@ from fastapi.staticfiles import StaticFiles
 
 from models import Face, ExpressionsRus, AnimationsRus, EasingRus, EyesRus
 
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 app.face = None
@@ -26,6 +29,7 @@ async def get_main_page():
 @app.post("/set_face/")
 async def set_face(face: Face):
     app.face = face
+    logger.error(face)
     return {"face": face}
 
 
