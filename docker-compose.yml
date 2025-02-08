@@ -1,12 +1,12 @@
 services:
-  frontend:
-    image: nginx
-    container_name: "frontend"
-    ports:
-      - 80:80
-    restart: always
-    volumes:
-      - ./frontend/nginx.conf:/etc/nginx/nginx.conf
+  # frontend:
+  #   image: nginx
+  #   container_name: "frontend"
+  #   ports:
+  #     - 80:80
+  #   restart: always
+  #   volumes:
+  #     - ./frontend/nginx.conf:/etc/nginx/nginx.conf
 
   patrik-move:
     build:
@@ -24,16 +24,16 @@ services:
     devices:
     - "/dev/ttyUSB0:/dev/ttyUSB0"
 
-  patrik-ui-old:
-    image: joseluisq/static-web-server:2-alpine
-    container_name: patrik-ui-old
-    restart: always
-    environment:
-      - SERVER_ROOT=/var/public
-      - SERVER_CONFIG_FILE=/etc/config.toml
-    volumes:
-      - ./patrik-ui-old:/var/public
-      - ./patrik-ui-old/config.toml:/etc/config.toml
+  # patrik-ui-old:
+  #   image: joseluisq/static-web-server:2-alpine
+  #   container_name: patrik-ui-old
+  #   restart: always
+  #   environment:
+  #     - SERVER_ROOT=/var/public
+  #     - SERVER_CONFIG_FILE=/etc/config.toml
+  #   volumes:
+  #     - ./patrik-ui-old:/var/public
+  #     - ./patrik-ui-old/config.toml:/etc/config.toml
 
   patrik-ui:
       stop_signal: SIGKILL
@@ -54,19 +54,39 @@ services:
       volumes:
       - ./patrik-ui/app:/code/app
 
-  patrik-camera:
-    container_name: patrik-camera
-    restart: always
-    ports:
-      - 8081:8081
-      - 8765:8765
-    image: ccrisan/motioneye:master-armhf
-    devices:
-      - "/dev/video0:/dev/video0"
-      - "/dev/video1:/dev/video1"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /patrik-camera:/etc/motioneye
+  # patrik-camera-new:
+  #   container_name: patrik-camera-new
+  #   restart: always
+  #   build:
+  #       context: .
+  #       dockerfile_inline: |
+  #         FROM python:3.11
+  #         WORKDIR /code
+  #         COPY  ./patrik-ui/requirements.txt /code/requirements.txt
+  #         RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+  #         CMD ["fastapi", "run", "app/main.py", "--port", "80"]
+  #   ports:
+  #     - 80:8001
+  #   devices:
+  #     - "/dev/video0:/dev/video0"
+  #     - "/dev/video1:/dev/video1"
+  #   volumes:
+  #     # - /etc/localtime:/etc/localtime:ro
+  #     - ./patrik-camera-new/app:/code/app
+
+  # patrik-camera:
+  #   container_name: patrik-camera
+  #   restart: always
+  #   ports:
+  #     - 8081:8081
+  #     - 8765:8765
+  #   image: ccrisan/motioneye:master-armhf
+  #   devices:
+  #     - "/dev/video0:/dev/video0"
+  #     - "/dev/video1:/dev/video1"
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - /patrik-camera:/etc/motioneye
 
   patrik-say:
     container_name: patrik-say

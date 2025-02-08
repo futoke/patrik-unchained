@@ -137,7 +137,7 @@ async def main(page: ft.Page):
         async with httpx.AsyncClient() as client:
             await client.post(
                 "http://patrik-face/set_face/", 
-                json=json.dumps(response)
+                data=json.dumps(response)
             )
         page.update()
 
